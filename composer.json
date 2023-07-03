@@ -12,9 +12,11 @@
     "authors": [
         {
             "name": "William Durand",
-            "email": "william.durand1@gmail.com",
-            "name-fork": "Sebastian Pondo",
-            "email-fork": "info@diagnolek.pl"
+            "email": "william.durand1@gmail.com"
+        },
+        {
+            "name": "Sebastian Pondo",
+            "email": "info@diagnolek.pl"
         }
     ],
     "require": {
@@ -44,7 +46,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Propel\\": "src/Propel/"
+            "Propel\\": "src/Propel/",
+            "Propel\\Ext\\": "src/Ext/"
         }
     },
     "bin": [

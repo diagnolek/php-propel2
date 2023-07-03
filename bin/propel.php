@@ -21,13 +21,15 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Finder\Finder;
 
 $finder = new Finder();
-$finder->files()->name('*.php')->in(__DIR__ . '/../src/Propel/Generator/Command')->depth(0);
+$finder->files()->name('*.php')->in([__DIR__ . '/../src/Propel/Generator/Command', __DIR__ . '/../src/Ext/Generator/Command'])->depth(0);
 
 $app = new Application('Propel', Propel::VERSION);
 
-$ns = '\\Propel\\Generator\\Command\\';
+$nsBase = '\\Propel\\Generator\\Command\\';
+$nsExt = '\\Propel\\Ext\\Generator\\Command\\';
 
 foreach ($finder as $file) {
+    $ns = strpos($file->getPathname(),'src/Ext') !== false ? $nsExt : $nsBase;
     $r = new \ReflectionClass($ns . $file->getBasename('.php'));
     if ($r->isSubclassOf(Command::class) && !$r->isAbstract()) {
         $app->add($r->newInstance());
