@@ -46,8 +46,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Propel\\": "src/Propel/",
-            "Propel\\Ext\\": "src/Ext/"
+            "Propel\\": "src/Propel/"
         }
     },
     "bin": [
