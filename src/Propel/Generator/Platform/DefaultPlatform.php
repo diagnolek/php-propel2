@@ -177,9 +177,9 @@ class DefaultPlatform implements PlatformInterface
     {
         $reflectionClass = new ReflectionClass($this);
         $platformShortName = $reflectionClass->getShortName();
-        $length = strpos($platformShortName, 'Platform') ?: null;
+        $pos = strpos($platformShortName, 'Platform') ?: null;
 
-        return strtolower(substr($platformShortName, 0, $length));
+        return strtolower(substr($platformShortName, 0, $pos));
     }
 
     /**
@@ -492,7 +492,7 @@ DROP TABLE IF EXISTS " . $this->quoteIdentifier($table->getName()) . ";
      * // '"foo","bar"'
      * </code>
      *
-     * @param \Propel\Generator\Model\Column[] $columns
+     * @param array<\Propel\Generator\Model\Column> $columns
      * @param string $delimiter The delimiter to use in separating the column names.
      *
      * @return string

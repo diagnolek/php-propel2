@@ -10,6 +10,7 @@ namespace Propel\Generator\Platform;
 
 use Propel\Generator\Exception\EngineException;
 use Propel\Generator\Model\Column;
+use Propel\Generator\Model\ColumnDefaultValue;
 use Propel\Generator\Model\Database;
 use Propel\Generator\Model\Diff\ColumnDiff;
 use Propel\Generator\Model\Diff\TableDiff;
@@ -371,8 +372,7 @@ COMMIT;
      */
     public function getAddTableDDL(Table $table): string
     {
-        $ret = '';
-        $ret .= $this->getUseSchemaDDL($table);
+        $ret = $this->getUseSchemaDDL($table);
         $ret .= $this->getAddSequenceDDL($table);
 
         $lines = [];
@@ -464,8 +464,7 @@ COMMENT ON COLUMN %s.%s IS %s;
      */
     public function getDropTableDDL(Table $table): string
     {
-        $ret = '';
-        $ret .= $this->getUseSchemaDDL($table);
+        $ret = $this->getUseSchemaDDL($table);
         $pattern = "
 DROP TABLE IF EXISTS %s CASCADE;
 ";
@@ -515,6 +514,16 @@ DROP TABLE IF EXISTS %s CASCADE;
             }
         } else {
             $ddl[] = $sqlType;
+        }
+
+        if (
+            $col->getDefaultValue()
+            && $col->getDefaultValue()->isExpression()
+            && $col->getDefaultValue()->getValue() === 'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
+        ) {
+            $col->setDefaultValue(
+                new ColumnDefaultValue('CURRENT_TIMESTAMP', ColumnDefaultValue::TYPE_EXPR),
+            );
         }
 
         $default = $this->getColumnDefaultValueDDL($col);
